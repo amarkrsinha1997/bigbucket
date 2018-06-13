@@ -7,25 +7,25 @@ def products_saving_location(instance , filename):
 class UserDetail(models.Model):
 	USER_ROLES = (('1', 'KISHAN'),('2', 'DUKHANDAAR'), ('3', 'KARIDDAR'))
 	user_type = models.CharField(choices=USER_ROLES,max_length=11,blank=False)
-	first_name = models.CharField()
-	last_name = models.CharField()
-	state = models.CharField(blank=True, null=True)
-	city = models.CharField(blank=True, null=True)
-	district = models.CharField(blank=True, null=True)
-	village = models.CharField(blank=True, null=True)
-	phone_number = models.CharField(blank=True, null=True)
-	password = models.CharField()
+	first_name = models.CharField(max_length=30)
+	last_name = models.CharField(max_length=30)
+	state = models.CharField(blank=True,max_length=20, null=True)
+	city = models.CharField(blank=True,max_length=20, null=True)
+	district = models.CharField(blank=True,max_length=20, null=True)
+	village = models.CharField(blank=True,max_length=20, null=True)
+	phone_number = models.CharField(blank=True, null=True,max_length=20)
+	password = models.CharField(max_length=20)
 	
 	def __str__(self):
 		return self.user.first_name + self.user.last_name
 
 class Product(models.Model):
 	CATEGORY = (('1', 'Dairy Product'), ('2','Fruits'), ('3', 'Vegetable'), ('4', 'Grocery'), ('5', 'Daily Utilies'))
-	product_name = models.CharField()
+	product_name = models.CharField(max_length=20)
 	price = models.IntegerField()
 	quantity = models.IntegerField()
 	quantity_type = models.CharField(max_length=8)
-	category = models.CharField(choices=CATEGORY)
+	category = models.CharField(choices=CATEGORY,max_length=20)
 	sell_point = models.IntegerField()
 	city = models.IntegerField()
 	latitude = models.FloatField()
@@ -42,10 +42,7 @@ class Product(models.Model):
 		if product_quantity<=0:
 			self.is_available = False
 			self.save()
-	
-	def is_in_stock(self):
-		return self.is_available
 
-def AddedToCart(models.Model):
+class AddedToCart(models.Model):
 	product = models.ForeignKey(Product)
 	user = models.ForeignKey(UserDetail, related_query_name='cart_items',related_name='cart_items')
